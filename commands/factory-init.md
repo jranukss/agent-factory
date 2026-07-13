@@ -1,5 +1,5 @@
 ---
-description: Bootstrap & validate the agent factory in this project — generate .claude/factory/config.md from the template, verify prerequisites, and check agent registration.
+description: Bootstrap & validate the agent factory in this project — generate .claude/factory/config.md from the template (or sync an existing config with the installed factory version), verify prerequisites, and check agent registration.
 argument-hint: "(no arguments)"
 allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion, Bash(git *), Bash(gh *), Bash(ls *), Bash(cat *), Bash(node *), Bash(npm *), Bash(npx *)
 ---
@@ -31,13 +31,49 @@ PASS/FIX report. Do not modify application code.
   conventions source; suggest running Claude Code's `/init` first) or point
   the config at another doc.
 
-## 2. Generate `.claude/factory/config.md`
+## 2. Generate or sync `.claude/factory/config.md`
 
-If `config.md` already exists, **do not overwrite it** — diff it against the
-template's section list and only report missing sections (e.g. an old config
-without the Gate policy table).
+Two modes, decided by whether `config.md` exists:
 
-Otherwise, copy `config.template.md` → `config.md` and fill the placeholders
+### 2a. SYNC mode — `config.md` exists (never overwrite it)
+
+Reconcile the existing config with the installed factory version, additively:
+
+1. **Diagnose versions.** Read `.claude/factory/VERSION` (installed factory)
+   and the config's `factory version:` stamp. Open the sync with both, e.g.
+   *"Installed factory: v2.1.0 · config last synced: v2.0.1."* Missing
+   `VERSION` file → a pre-v2.1.0 install; suggest re-running the installer.
+   Missing stamp → fine; the section diff below is the source of truth.
+2. **Diff sections.** Compare the `## `-level sections of
+   `config.template.md` against `config.md`. For each template section the
+   config lacks: one line on what it does + the proposed content (values
+   detected per the rules in 2b where possible, template defaults otherwise),
+   then ask **add / skip** (one AskUserQuestion; chunk if more than 4).
+   Never modify a section that exists — its values are the project's.
+   Sections in the config that are *not* in the template are project-custom:
+   list them as "left alone", never delete or edit them.
+3. **Reconcile the design skill.**
+   - Config **names a skill**: verify that exact name is registered in this
+     session (check the session's available-skills list, not just
+     `.claude/skills/` — plugin-installed skills live elsewhere and may
+     register under a namespaced name). Not registered → flag it with the
+     fix: install the skill from **its own source** (its README or plugin
+     marketplace), reload the session, re-run `/factory-init`. Never offer
+     to copy skill files from another project — the factory does not
+     redistribute third-party skills.
+   - Config has **no Design-skill section** but a design-oriented skill is
+     registered (or present in `.claude/skills/`) → offer to add the section
+     with the exact registered name.
+4. **Stamp.** After applying the accepted changes, set the config's
+   `factory version:` line (add it if absent) to the value in
+   `.claude/factory/VERSION`. No `VERSION` file → leave the stamp alone.
+5. **Report** (feeds §4): sections added / skipped / left alone, skill
+   verification result, plus the standing reminders — reload the session if
+   any agent/skill files changed since session start; commit `config.md`.
+
+### 2b. GENERATE mode — no `config.md` yet
+
+Copy `config.template.md` → `config.md` and fill the placeholders
 by detection, asking only for what you cannot detect:
 
 - **Commands:** read `package.json` scripts (or the equivalent for the stack —
@@ -60,8 +96,14 @@ by detection, asking only for what you cannot detect:
   adjust via one AskUserQuestion if the headings are ambiguous.
 - **Models / Gate policy / Lanes:** keep the template defaults unless the user
   says otherwise.
-- **Design skill:** `Glob` `.claude/skills/*/SKILL.md`; if a design-oriented
-  skill exists, propose it, else delete the section.
+- **Design skill:** check the session's registered skills and `Glob`
+  `.claude/skills/*/SKILL.md`; if a design-oriented skill exists, propose it
+  (record the exact registered name — plugin skills may be namespaced), else
+  delete the section. If the user wants one that isn't installed, point them
+  at the skill's own source (README / plugin marketplace) — the factory never
+  redistributes third-party skills.
+- **Factory version:** fill `{{FACTORY_VERSION}}` from
+  `.claude/factory/VERSION`; delete the stamp line if that file is absent.
 - **Notifications:** ask (hook / push / none) — one question, default none.
 
 ## 3. Validate agent registration
@@ -82,6 +124,7 @@ Finish with a checklist:
 - [x] git repo · gh authenticated
 - [x] factory files installed (7 agents, feature.md, protocol.md)
 - [x] config.md generated (typecheck/lint/test/build detected)
+      — or, in sync mode: config synced to v{X} (N sections added, M skipped)
 - [x] docs/tickets/ ready · .claude/worktrees gitignored
 - [ ] SESSION RELOAD REQUIRED before first /feature   ← if applicable
 Next: run `/feature <your first request>` (or `/feature lane:hotfix <tiny fix>`).

@@ -19,6 +19,10 @@ for pair in "agents:.claude/agents" "commands:.claude/commands" "factory:.claude
   done
 done
 
+# Version marker — read by /factory-init sync mode ("installed vs synced").
+cp -f "$SRC/VERSION" "$TARGET/.claude/factory/VERSION"
+echo "  installed .claude/factory/VERSION"
+
 # Skills are directories (skills/<name>/SKILL.md + any references)
 for d in "$SRC/skills"/*/; do
   name="$(basename "$d")"

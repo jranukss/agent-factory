@@ -24,7 +24,7 @@ agents/                 # 7 generic role agents → installs to .claude/agents/
   qa-runner.md            # live browser execution via Playwright MCP (sonnet)
 commands/               # → installs to .claude/commands/
   feature.md              # the orchestrator (resumable state machine)
-  factory-init.md         # per-project bootstrap + validation
+  factory-init.md         # per-project bootstrap + validation; re-run = config sync
 factory/                # → installs to .claude/factory/
   protocol.md             # the generic contract (phases, gates, loops, returns)
   config.template.md      # per-project template → becomes config.md via /factory-init
@@ -38,6 +38,7 @@ docs/
   how-it-works.md         # architecture & concepts (roles, phases, gates, loops, cost)
   user-guide.md           # day-to-day usage, gate playbook, troubleshooting
 install.ps1 / install.sh  # copy the above into a target repo
+VERSION                   # factory release → installs to .claude/factory/VERSION
 EXPORT.md                 # distribution & update guide (copy-based now, plugin later)
 ```
 

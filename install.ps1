@@ -30,6 +30,10 @@ foreach ($m in $map) {
     }
 }
 
+# Version marker — read by /factory-init sync mode ("installed vs synced").
+Copy-Item (Join-Path $src "VERSION") (Join-Path $Target ".claude\factory\VERSION") -Force
+Write-Host "  installed .claude\factory\VERSION"
+
 # Skills are directories (skills/<name>/SKILL.md + any references)
 Get-ChildItem (Join-Path $src "skills") -Directory | ForEach-Object {
     $dest = Join-Path $Target ".claude\skills\$($_.Name)"

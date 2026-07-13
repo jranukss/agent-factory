@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.1.0 — 2026-07-12
+
+- **`/factory-init` sync mode**: re-running it on a project with an existing
+  `config.md` now *reconciles* instead of only reporting — section-by-section
+  diff against the current template (add/skip per missing section; existing
+  sections never modified; project-custom sections never deleted), then a
+  `factory version:` stamp records the sync. Config updates after a factory
+  upgrade no longer need hand-porting.
+- **Design-skill reconciliation** in sync mode: verifies the configured skill
+  name against the session's *registered* skills (plugin installs may be
+  namespaced), offers the `## Design skill` section when a design skill is
+  present but unconfigured, and when one is missing points at the skill's own
+  install source — the factory never bundles or copies third-party skills
+  (e.g. impeccable installs via `npx impeccable install` or its plugin
+  marketplace).
+- **Version tracking**: new `VERSION` file at the repo root; installers copy
+  it to `.claude/factory/VERSION` (port note: pre-2.1.0 installs lack it
+  until the installer is re-run). Config template gains the
+  `factory version:` stamp line.
+- Docs: user-guide §10 rewritten around sync mode + new §11 "Adding a design
+  skill"; EXPORT.md update-flow and release-hygiene notes updated.
+
 ## v2.0.2 — 2026-07-12
 
 - **Context checkpoints** (new protocol §10; Cost tracking renumbered to

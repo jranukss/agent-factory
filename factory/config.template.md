@@ -1,5 +1,9 @@
 # Factory Config — {{PROJECT_NAME}}
 
+> factory version: {{FACTORY_VERSION}} <!-- the factory version this config was
+> last generated/synced against (compare `.claude/factory/VERSION`). Maintained
+> by /factory-init — do not edit by hand. -->
+
 <!--
   TEMPLATE — copy to `.claude/factory/config.md` in the target project and fill
   every {{placeholder}}. `/factory-init` does this for you (and detects most
@@ -135,8 +139,14 @@ user in the request wins without a scope pass.
 
 ## Design skill  (optional)
 
-- skill name: `{{DESIGN_SKILL}}` <!-- e.g. "impeccable"; delete this section if
-  the project has no design skill — ux-designer then designs unaided -->
+- skill name: `{{DESIGN_SKILL}}`
+  <!-- The EXACT name the skill registers under in the session — plugin-installed
+       skills may be namespaced. The factory never bundles third-party skills:
+       install one from its own source (e.g. impeccable —
+       github.com/pbakaus/impeccable — via `npx impeccable install` or
+       `/plugin marketplace add pbakaus/impeccable`), reload the session, then
+       re-run /factory-init to wire it in. Delete this section if the project
+       has no design skill — the ux-designer then designs unaided. -->
 
 ## Notifications  (optional)
 

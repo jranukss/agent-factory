@@ -128,8 +128,34 @@ output are indistinguishable in history.
 
 ## 10. Updating the factory
 
-Re-run the installer from a newer tagged version of the factory repo — it
-overwrites agents/commands/protocol/skills but never your `config.md`. Check
-the factory CHANGELOG for new config sections, run `/factory-init` to
-validate, reload the session. In-flight tickets should finish on the version
-they started on.
+1. Re-run the installer from a newer tagged version of the factory repo — it
+   overwrites agents/commands/protocol/skills/scripts and
+   `.claude/factory/VERSION`, but never your `config.md`.
+2. Reload the session.
+3. Run `/factory-init`. With an existing config it enters **sync mode**: it
+   reports "installed vs last-synced" versions, offers each config section
+   the new version added (add/skip, values detected where possible — your
+   existing sections are never touched), re-verifies the design skill, and
+   stamps the config with the synced version.
+
+In-flight tickets should finish on the version they started on.
+
+## 11. Adding a design skill (example: impeccable)
+
+On the Full lane, the ux-designer invokes the design skill named in
+`config.md` (→ Design skill) to raise mockup quality. The factory never
+bundles third-party skills — install one from its own source, then wire it in:
+
+1. Install the skill per its docs — e.g.
+   [impeccable](https://github.com/pbakaus/impeccable):
+   `npx impeccable install`, or in Claude Code
+   `/plugin marketplace add pbakaus/impeccable`.
+2. **Reload the session** — skills, like agents, register at session start.
+3. Run `/factory-init` — sync mode detects the registered skill and offers
+   the `## Design skill` config section with its exact registered name
+   (plugin-installed skills may be namespaced).
+4. Commit `config.md` (plus `.claude/skills/` if the install copied files
+   into the project).
+
+It applies from the next Full-lane ticket's DESIGN phase; Lite and Hotfix
+lanes skip design and are unaffected.

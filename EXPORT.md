@@ -17,6 +17,9 @@ Ongoing repo hygiene:
 
 - **Semver tags** (`v2.0.0`, `v2.1.0`…): projects pin to a tag, so a factory
   change never surprises a mid-flight ticket.
+- **Bump `VERSION` with every release** — same commit as the CHANGELOG entry
+  and the tag. Installers copy it to `.claude/factory/VERSION`, which
+  `/factory-init` sync mode compares against the config's stamp.
 - **`CHANGELOG.md`**: one line per change, noting which files a project must
   re-copy and whether `config.md` gained new sections (the only file installs
   don't overwrite — config changes need a manual note).
@@ -39,10 +42,11 @@ commit `.claude/agents`, `.claude/commands`, `.claude/factory`, and
 copy + config; the factory repo is the upstream).
 
 **Updating a project** to a new factory version: re-run the install script
-from the new tag. It overwrites agents/commands/protocol/template but **never
-`config.md`**; check the CHANGELOG for "config sections added" notes and port
-those by hand (or let `/factory-init` diff-and-report — it detects missing
-sections). Then reload the session.
+from the new tag. It overwrites agents/commands/protocol/skills/scripts and
+`.claude/factory/VERSION` but **never `config.md`**. Then reload the session
+and run `/factory-init` — sync mode diffs the config against the new
+template and offers each missing section (your values are never touched),
+so CHANGELOG "config sections added" notes no longer need hand-porting.
 
 **Why copy, not submodule/subtree:** agents and commands *must* physically
 live under the project's `.claude/` for Claude Code to load them, and projects

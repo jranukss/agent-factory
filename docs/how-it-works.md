@@ -209,6 +209,13 @@ controls this by design:
 - **Measurement** — the orchestrator logs per-ticket cost estimates into
   `STATUS.md` (via ccusage). For per-agent dashboards, enable Claude Code's
   OpenTelemetry export with `OTEL_LOG_TOOL_DETAILS=1`.
+- **Context checkpoints** (protocol §10) — at heavy points (implementation
+  complete, each fix-loop iteration, ready-to-merge) the orchestrator
+  measures real context-window usage via `factory/scripts/context-usage.mjs`
+  and, at or past the configured threshold, offers "continue vs stop for a
+  fresh window". A stop finalizes `STATUS.md` and resumes losslessly with a
+  bare `/feature`; if measurement fails it falls back to estimation and
+  never blocks the pipeline.
 
 ## 10. Standardized git output
 

@@ -7,22 +7,14 @@ the polished end-state.
 
 ---
 
-## Phase 0 — One-time repo creation (10 minutes)
+## Phase 0 — One-time repo creation ✅ done (2026-07-12)
 
-From this folder (`claude-agent-factory/`):
+Published **public** at <https://github.com/jranukss/agent-factory>
+(branch `main`; content was reviewed for secrets/personal data before
+publishing).
 
-```bash
-git init
-git add .
-git commit -m "feat: agent factory v2 — portable feature-delivery pipeline"
-gh repo create jranukss/claude-agent-factory --private --source . --push
-git tag v2.0.0 && git push --tags
-```
+Ongoing repo hygiene:
 
-Recommended repo hygiene from day one:
-
-- **Private first**, public later if you want — nothing in the factory is
-  project-specific, but review once before flipping.
 - **Semver tags** (`v2.0.0`, `v2.1.0`…): projects pin to a tag, so a factory
   change never surprises a mid-flight ticket.
 - **`CHANGELOG.md`**: one line per change, noting which files a project must
@@ -36,7 +28,7 @@ Recommended repo hygiene from day one:
 **New project:**
 
 ```bash
-git clone --depth 1 --branch v2.0.0 https://github.com/jranukss/claude-agent-factory tmp-factory
+git clone --depth 1 --branch v2.0.2 https://github.com/jranukss/agent-factory tmp-factory
 tmp-factory/install.sh /path/to/project        # or install.ps1 -Target ... on Windows
 rm -rf tmp-factory
 ```
@@ -77,7 +69,7 @@ them **without copying into each project**, with marketplace-style install
    contracts" step in each agent + command accordingly.
 3. Register a marketplace entry (a repo can serve as its own marketplace via
    `.claude-plugin/marketplace.json`), then in any project:
-   `/plugin marketplace add jranukss/claude-agent-factory` →
+   `/plugin marketplace add jranukss/agent-factory` →
    `/plugin install agent-factory` → `/factory-init`.
 4. Keep the install scripts working through the transition — copy-based and
    plugin installs can coexist (a project uses one or the other).

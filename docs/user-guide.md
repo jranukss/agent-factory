@@ -8,7 +8,9 @@ the [README](../README.md) and [EXPORT.md](../EXPORT.md).*
 
 ## 1. First-time setup in a project
 
-1. Run the installer from the factory repo:
+1. Get the factory
+   (`git clone --depth 1 https://github.com/jranukss/agent-factory`) and run
+   the installer:
    `.\install.ps1 -Target <project>` (Windows) or `./install.sh <project>`.
 2. **Reload the Claude Code session** — agents register at session start;
    skipping this is the #1 cause of "agent not found".
@@ -61,6 +63,10 @@ notes (bounded at 3 rounds, then the orchestrator escalates options to you).
 - Implementation happens in `.claude/worktrees/{id}` on branch `feat/{id}` —
   your checkout stays clean. Avoid editing the same feature in your main
   checkout while a ticket is mid-implementation.
+- At heavy steps the orchestrator checks real context usage and, past the
+  threshold in config.md (→ Context checkpoint), asks "continue vs stop for
+  a fresh window". Stopping is lossless — STATUS.md is finalized and a bare
+  `/feature` in a new session resumes exactly where it left off.
 
 ## 5. Review, QA, and fix loops
 

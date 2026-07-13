@@ -1,4 +1,4 @@
-# Claude Agent Factory (v2)
+# Agent Factory
 
 A portable, project-agnostic **feature-delivery factory** for Claude Code: a
 resumable `/feature` orchestrator drives a team of specialist subagents —
@@ -29,6 +29,7 @@ factory/                # → installs to .claude/factory/
   protocol.md             # the generic contract (phases, gates, loops, returns)
   config.template.md      # per-project template → becomes config.md via /factory-init
   conventions.md          # commit format + PR template — single source of truth
+  scripts/context-usage.mjs # measures real context % for context checkpoints
 skills/                 # → installs to .claude/skills/
   commit/                 # standardized Conventional Commits for manual work
   create-pr/              # standardized PR descriptions for manual work
@@ -37,10 +38,14 @@ docs/
   how-it-works.md         # architecture & concepts (roles, phases, gates, loops, cost)
   user-guide.md           # day-to-day usage, gate playbook, troubleshooting
 install.ps1 / install.sh  # copy the above into a target repo
-EXPORT.md                 # plan for publishing/distributing this as a GitHub repo
+EXPORT.md                 # distribution & update guide (copy-based now, plugin later)
 ```
 
 ## Install into a project
+
+```bash
+git clone --depth 1 https://github.com/jranukss/agent-factory
+```
 
 ```powershell
 # Windows
@@ -78,6 +83,10 @@ REVIEWING (code-review ∥ QA-plan) ⇄ FIXING ─► QA_RUNNING ⇄ FIXING
 - **All loops are bounded** (3 iterations → escalate): intake, revisions,
   review fix loop (delta re-reviews), QA fix loop (failed scenarios only),
   re-plan.
+- **Context checkpoints:** at heavy steps (implementation done, each fix-loop
+  iteration, ready-to-merge) the orchestrator measures **real** context usage
+  via `factory/scripts/context-usage.mjs` and, past the configured threshold,
+  offers a lossless stop-and-resume in a fresh session.
 - **Cost tracking:** the orchestrator logs per-ticket token/cost estimates
   into `STATUS.md` via [ccusage](https://ccusage.com). For per-agent
   dashboards, enable Claude Code's

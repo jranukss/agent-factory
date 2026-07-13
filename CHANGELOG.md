@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.1.1 — 2026-07-13
+
+- **product-owner now runs opus** (was sonnet): the spec and acceptance
+  criteria it writes define "done" for every downstream agent, so its output
+  has the widest blast radius in the pipeline — sonnet's cost saving wasn't
+  worth the risk of an ambiguous spec poisoning the plan, implementation, and
+  QA. qa-runner is now the only sonnet role. Updated `agents/product-owner.md`,
+  `docs/how-it-works.md`, and the recommended-models table in
+  `factory/config.template.md`.
+
 ## v2.1.0 — 2026-07-12
 
 - **`/factory-init` sync mode**: re-running it on a project with an existing

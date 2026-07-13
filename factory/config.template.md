@@ -100,7 +100,7 @@ model override on each Task call when the harness supports it.
 
 | role          | model  | rationale                                    |
 |---------------|--------|----------------------------------------------|
-| product-owner | sonnet | sizing + spec writing; opus not required     |
+| product-owner | opus   | spec defines "done" for the whole pipeline — highest blast radius |
 | ux-designer   | opus   | design quality is worth it                   |
 | tech-lead     | opus   | plan quality compounds downstream — never cut here |
 | senior-dev    | opus   | the diff is the product                      |

@@ -43,7 +43,7 @@ which always reads the standards in full.
 
 | Agent | Model | Reads | Writes | Never does |
 |---|---|---|---|---|
-| **product-owner** | sonnet | task, product surface | `00-intake.md`, `01-spec.md`, `ROADMAP.md` | name files, schemas, or tech approach |
+| **product-owner** | opus | task, product surface | `00-intake.md`, `01-spec.md`, `ROADMAP.md` | name files, schemas, or tech approach |
 | **ux-designer** | opus | spec, component vocabulary | `design/mockup.html`, `02-design.md` | write app code; publish Artifacts |
 | **tech-lead** | opus | spec, design, the actual code | `03-plan.md`, `standards-digest.md` | write app code; open branches |
 | **senior-dev** | opus | plan, digest | **the code + tests**, the PR | expand scope; merge; delete branches |
@@ -200,8 +200,8 @@ controls this by design:
 
 - **Scoped reading** — each role reads only its mapped standards sections;
   downstream agents read the per-ticket digest, not the full standards doc.
-- **Model right-sizing** — judgment-heavy roles run opus; mechanical roles
-  (qa-runner) and sizing roles (product-owner) run sonnet, per the config.
+- **Model right-sizing** — judgment-heavy roles run opus; the mechanical
+  execution role (qa-runner) runs sonnet, per the config.
 - **Lane discipline** — small work takes the cheap path. The 15× is for real
   features, where it buys spec, design, plan, review, and live QA.
 - **Delta re-work** — fix-loop re-reviews and QA re-runs cover only what
